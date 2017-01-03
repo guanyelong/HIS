@@ -1,0 +1,26 @@
+﻿using SHM.IDAL;
+using SHM.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SHM.DAL
+{
+    public class DBContextFactory : IDBContextFactory
+    {
+        public DbContext GetDbContext()
+        {
+            DbContext dbContext = CallContext.GetData(typeof(DBContextFactory).Name) as DbContext;
+            if (dbContext == null)
+            {
+                dbContext = new HISDataContainer();
+                CallContext.SetData(typeof(DBContextFactory).Name, dbContext);
+            }
+            return dbContext;
+        }
+    }
+}
